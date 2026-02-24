@@ -1,113 +1,93 @@
-const MAX = 37;
 const MIN = 23;
-
-const spinBtn = document.getElementById("spinBtn");
-const folderBtn = document.getElementById("folderBtn");
-const albumList = document.getElementById("albumList");
-
-const panel = document.getElementById("panel");
-const closePanel = document.getElementById("closePanel");
-const panelList = document.getElementById("panelList");
-const addAlbum = document.getElementById("addAlbum");
+const MAX = 37;
 
 let albums = JSON.parse(localStorage.getItem("albums")) || [];
 
-/* ================= RENDER RIGHT ================= */
-
-function renderRight(){
-  albumList.innerHTML = "";
-  albums.slice(0,8).forEach((a,i)=>{
-    albumList.innerHTML += `
-      <div class="album-item">
-        <div class="album-number">${String(i+1).padStart(2,'0')}</div>
-        <img class="album-cover" src="${a.cover}">
-        <div>
-          <div class="album-title">${a.title}</div>
-          <div class="album-artist">${a.artist}</div>
-        </div>
-      </div>
-    `;
-  });
+if (albums.length === 0) {
+    for (let i = 0; i < MIN; i++) {
+        albums.push({
+            title: "none",
+            artist: "none",
+            image: ""
+        });
+    }
 }
 
-/* ================= RENDER PANEL ================= */
+const albumList = document.getElementById("albumList");
 
-function renderPanel(){
-  panelList.innerHTML = "";
-  albums.forEach((a,i)=>{
-    panelList.innerHTML += `
-      <div class="album-item">
-        <img class="album-cover" src="${a.cover}">
-        <div>
-          <div class="album-title">${a.title}</div>
-          <div class="album-artist">${a.artist}</div>
-        </div>
-        <button onclick="editAlbum(${i})">✎</button>
-        <button onclick="deleteAlbum(${i})">🗑</button>
-      </div>
-    `;
-  });
+function renderPhase1() {
+    albumList.innerHTML = "";
+
+    for (let i = 0; i < 8; i++) {
+
+        const album = albums[i];
+
+        const div = document.createElement("div");
+        div.className = "album-item";
+
+        div.innerHTML = `
+            <div class="number">${String(i+1).padStart(2,"0")}</div>
+            <div class="thumbnail" style="background-image:url('${album.image}'); background-size:cover;"></div>
+            <div>
+                <div class="info-title">${album.title}</div>
+                <div class="info-artist">${album.artist}</div>
+            </div>
+        `;
+
+        albumList.appendChild(div);
+    }
 }
 
-/* ================= FUNCTIONS ================= */
+document.getElementById("shuffleBtn").addEventListener("click", () => {
+    if (albums.length < MIN) {
+        alert("Minimum 23 albums required.");
+        return;
+    }
 
-function spin(){
-  if(albums.length < MIN){
-    alert("Necesitas mínimo 23 álbumes para usar la ruleta.");
-    return;
-  }
-  albums.sort(()=>Math.random()-0.5);
-  save();
-  renderRight();
+    albums.sort(() => Math.random() - 0.5);
+    localStorage.setItem("albums", JSON.stringify(albums));
+    renderPhase1();
+});
+
+document.getElementById("folderBtn").addEventListener("click", () => {
+    document.getElementById("folderPanel").classList.remove("hidden");
+    renderPhase2();
+});
+
+document.getElementById("closeFolder").onclick = () => {
+    document.getElementById("folderPanel").classList.add("hidden");
+};
+
+function renderPhase2() {
+    const custom = document.getElementById("customList");
+    custom.innerHTML = "";
+
+    albums.forEach((album, index) => {
+
+        const row = document.createElement("div");
+        row.innerHTML = `
+            <input type="text" value="${album.image}" placeholder="Image URL">
+            <input type="text" value="${album.title}">
+            <input type="text" value="${album.artist}">
+        `;
+
+        custom.appendChild(row);
+    });
 }
 
-function addNew(){
-  if(albums.length >= MAX){
-    alert("Máximo 37 álbumes.");
-    return;
-  }
+document.getElementById("saveAll").onclick = () => {
+    const rows = document.querySelectorAll("#customList div");
 
-  const title = prompt("Título:");
-  const artist = prompt("Artista:");
-  const cover = prompt("URL Imagen:");
+    rows.forEach((row, index) => {
+        const inputs = row.querySelectorAll("input");
+        albums[index].image = inputs[0].value;
+        albums[index].title = inputs[1].value;
+        albums[index].artist = inputs[2].value;
+    });
 
-  if(title && artist && cover){
-    albums.push({title,artist,cover});
-    save();
-    renderPanel();
-    renderRight();
-  }
-}
+    localStorage.setItem("albums", JSON.stringify(albums));
+    renderPhase1();
+    alert("Saved successfully");
+};
 
-function editAlbum(i){
-  const title = prompt("Nuevo título:", albums[i].title);
-  const artist = prompt("Nuevo artista:", albums[i].artist);
-  const cover = prompt("Nueva URL:", albums[i].cover);
-
-  albums[i] = {title,artist,cover};
-  save();
-  renderPanel();
-  renderRight();
-}
-
-function deleteAlbum(i){
-  albums.splice(i,1);
-  save();
-  renderPanel();
-  renderRight();
-}
-
-function save(){
-  localStorage.setItem("albums", JSON.stringify(albums));
-}
-
-/* ================= EVENTS ================= */
-
-spinBtn.onclick = spin;
-folderBtn.onclick = ()=>{ panel.classList.remove("hidden"); renderPanel(); };
-closePanel.onclick = ()=> panel.classList.add("hidden");
-addAlbum.onclick = addNew;
-
-/* ================= INIT ================= */
-
-renderRight();
+renderPhase1();
