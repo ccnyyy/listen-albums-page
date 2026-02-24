@@ -1,55 +1,74 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Albums Roulette</title>
+<title>Roulette To Listen</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600;1,700&family=Montserrat:wght@700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<div class="container">
+<div class="main-container">
 
-  <!-- LEFT -->
-  <section class="left">
-    <div class="top-title">roulette</div>
+    <!-- LEFT SIDE -->
+    <section class="left-side">
 
-    <h1 class="main-title">
-      Albums<br>
-      to Listen<br>
-      to
-    </h1>
+        <div class="header">
+            <h1 class="main-label">ROULETTE TO LISTEN</h1>
+            <h2 class="sub-label">New albums</h2>
+        </div>
 
-    <div class="stars">
-      <div class="star"></div>
-      <div class="star"></div>
-      <div class="star"></div>
-    </div>
+        <div class="star star-top"></div>
 
-    <div class="roulette-box">
-      <button id="spinBtn" class="circle-btn">↻</button>
-      <button id="folderBtn" class="circle-btn">📁</button>
-    </div>
-  </section>
+        <div class="cassette-wrapper">
+            <div class="cassette-stack"></div>
+        </div>
 
-  <!-- RIGHT -->
-  <section class="right">
-    <div id="albumList" class="album-list"></div>
-  </section>
+        <div class="star star-left"></div>
+        <div class="star star-right"></div>
+        <div class="star star-small"></div>
+
+        <div class="credits">
+            Credits to: Zaher
+        </div>
+
+    </section>
+
+
+    <!-- RIGHT SIDE -->
+    <section class="right-side">
+
+        <div id="albumList" class="album-list"></div>
+
+        <!-- PHASE 2 BUTTONS -->
+        <div class="bottom-panel">
+
+            <button id="shuffleBtn" class="icon-btn">
+                ⟳
+            </button>
+
+            <button id="folderBtn" class="icon-btn">
+                📁
+            </button>
+
+        </div>
+
+    </section>
 
 </div>
 
-<!-- PANEL CARPETA -->
-<div id="panel" class="panel hidden">
-  <div class="panel-header">
-    <h2>My Albums</h2>
-    <button id="closePanel">✕</button>
-  </div>
-  <div id="panelList" class="panel-list"></div>
-  <button id="addAlbum" class="add-btn">+ Add Album</button>
+<!-- FOLDER PANEL (PHASE 2) -->
+<div id="folderPanel" class="folder hidden">
+    <div class="folder-content">
+        <h3>Customize Albums (23–37)</h3>
+        <div id="customList"></div>
+        <button id="saveAll">💾 Save Changes</button>
+        <button id="closeFolder">Close</button>
+    </div>
 </div>
 
 <script src="script.js"></script>
