@@ -1,1 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Albums Roulette</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+  <!-- LEFT -->
+  <section class="left">
+    <div class="top-title">roulette</div>
+
+    <h1 class="main-title">
+      Albums<br>
+      to Listen<br>
+      to
+    </h1>
+
+    <div class="stars">
+      <div class="star"></div>
+      <div class="star"></div>
+      <div class="star"></div>
+    </div>
+
+    <div class="roulette-box">
+      <button id="spinBtn" class="circle-btn">↻</button>
+      <button id="folderBtn" class="circle-btn">📁</button>
+    </div>
+  </section>
+
+  <!-- RIGHT -->
+  <section class="right">
+    <div id="albumList" class="album-list"></div>
+  </section>
+
+</div>
+
+<!-- PANEL CARPETA -->
+<div id="panel" class="panel hidden">
+  <div class="panel-header">
+    <h2>My Albums</h2>
+    <button id="closePanel">✕</button>
+  </div>
+  <div id="panelList" class="panel-list"></div>
+  <button id="addAlbum" class="add-btn">+ Add Album</button>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
